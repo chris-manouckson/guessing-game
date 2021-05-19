@@ -1,0 +1,4 @@
+export const CITIES_SET_ALL = 'CITIES_SET_ALL';
+export const CITIES_SET_GUESS = 'CITIES_SET_GUESS';
+export const CITIES_SET_ACTUAL = 'CITIES_SET_ACTUAL';
+export const CITIES_GO_TO_NEXT = 'CITIES_GO_TO_NEXT';

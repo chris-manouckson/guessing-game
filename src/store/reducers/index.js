@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
 
+import cities from './cities';
+
 const rootReducer = combineReducers({
-  // TODO: list all reducers.
+  cities,
 });
 
 export default rootReducer;
