@@ -2,8 +2,7 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { citiesGoToNext, citiesSetGuess, citiesSetActual } from 'store/actions';
-import { requestGetWeather } from 'api';
+import { citiesGoToNext, citiesSetGuess, weatherGet } from 'store/actions';
 import { Layout } from 'components/common';
 import CityContainer from './CityContainer';
 import MainArea from './MainArea';
@@ -28,24 +27,11 @@ const Home = () => {
   const cities = useSelector(useCallback(state => state.cities.all, []));
   const currentIndex = useSelector(useCallback(state => state.cities.currentIndex, []));
 
-  const handleSubmit = useCallback(async (value) => {
+  const handleSubmit = useCallback((value) => {
     dispatch(citiesSetGuess(cities[currentIndex].name, value));
-
+    
     if (currentIndex === cities.length - 1) {
-      try {
-        for (let i = 0; i < cities.length; i++) {
-          const { name: cityName } = cities[i];
-          
-          const data = await requestGetWeather(cityName);
-
-          dispatch(citiesSetActual(cityName, Math.round(data.main.temp)));
-        }
-      } catch (error) {
-        // TODO: display error message.
-        console.log(error);
-      }
-
-      return;
+      dispatch(weatherGet());
     }
 
     dispatch(citiesGoToNext());
@@ -55,10 +41,12 @@ const Home = () => {
     <Layout>
       <Container>
         <MainAreaContainer>
-          <MainArea
-            cityName={cities[currentIndex].name}
-            onSubmit={handleSubmit}
-          />
+          {currentIndex < cities.length && (
+            <MainArea
+              cityName={cities[currentIndex].name}
+              onSubmit={handleSubmit}
+            />
+          )}
         </MainAreaContainer>
 
         <CityContainer cities={cities} />

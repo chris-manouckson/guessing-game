@@ -1,14 +1,15 @@
-import * as actionTypes from '../actionTypes/cities';
+import * as actionTypes from '../actionTypes';
 
 import { getRandomCities } from 'utils';
 
 const initialState = {
   all: getRandomCities().map(city => ({
     name: city,
-    guess: 0,
-    actual: 0,
+    guess: null,
+    actual: null,
   })),
   currentIndex: 0,
+  isLoading: false,
 };
 
 const cities = (state = initialState, action) => {
@@ -38,7 +39,6 @@ const cities = (state = initialState, action) => {
     
 
     case actionTypes.CITIES_SET_ACTUAL:
-      console.log('ara', action);
       return {
         ...state,
         all: state.all.map(city => 
@@ -48,6 +48,14 @@ const cities = (state = initialState, action) => {
           } : city
         ),
       };
+
+    // TODO: move to another reducer. 
+    case actionTypes.WEATHER_GET_PENDING:
+      return { ...state, isLoading: true };
+    case actionTypes.WEATHER_GET_SUCCESS:
+      return { ...state, isLoading: false };
+    case actionTypes.WEATHER_GET_FAILURE:
+      return { ...state, isLoading: false, error: action.error };
 
     default:
       return initialState;
