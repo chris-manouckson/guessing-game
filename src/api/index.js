@@ -1,1 +1,1 @@
-// TODO: export all API request functions as constants.
+export { default as requestGetWeather } from './requestGetWeather';
